@@ -4,7 +4,6 @@ INITIAL_AMOUMT = 100.0
 
 class State():
     def __init__(self):
-        self.version = 0
         self.accounts = defaultdict()
 
     def set_initial_account(self, address):
@@ -33,14 +32,14 @@ class State():
     def dump(self):
         print("current state:")
         for address, account in self.accounts.items():
-            print("address: {}, balance: {}, nonce: {}".format(address, account.balance, account.nonce))
+            print("address: {}, balance: {:.9f}, nonce: {}".format(address, account.balance, account.nonce))
 
 
 
 class Account():
     def __init__(self, address):
         self.address = address
-        self.balance = 100
+        self.balance = INITIAL_AMOUMT
         self.nonce = 0
 
     def get_balance(self):

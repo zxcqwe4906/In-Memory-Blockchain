@@ -26,3 +26,9 @@ input (file name or stop): sample_input.txt
 ```
 Note that the input file format must be:
 `"from_address to_address value"` in one line.
+
+You can continually enter input files when the node is running.
+
+When a new block generates, the node will output the blockchain log to the console which contains the block content and account state.
+
+Any other error log will also output to the console.
