@@ -1,5 +1,6 @@
 import time, threading
 from blockchain import Blockchain, Transaction
+from utils import new_block_log, read_from_file
 
 BOLCK_TIME = 10
 
@@ -20,10 +21,7 @@ class Node():
                 self.start_time = time.time()
                 self.blockchain.add_block(self.current_block)
 
-                print("new block enter blockchain:")
-                self.current_block.dump()
-                self.blockchain.state.dump()
-                print()
+                new_block_log(self.current_block, self.blockchain.state)
 
                 self.current_block = self.blockchain.create_block()
 
@@ -64,16 +62,10 @@ if __name__ == '__main__':
             node.stop()
             break
 
-        try:
-            with open(input_str) as f:
-                for line in f:
-                    from_adress, to_address, amount_str = line.split()
-                    amount = float(amount_str)
+        txs = read_from_file(input_str)
+        for tx in txs:
+            from_adress, to_address, amount = tx
+            from_account = node.blockchain.state.get_account(from_adress)
 
-                    from_account = node.blockchain.state.get_account(from_adress)
-
-                    raw_tx = Transaction(from_adress, to_address, amount)
-                    node.blockchain.tx_pool.append(raw_tx)
-                f.close()
-        except FileNotFoundError:
-            print("input file not found")
+            raw_tx = Transaction(from_adress, to_address, amount)
+            node.blockchain.tx_pool.append(raw_tx)
